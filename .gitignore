@@ -1,0 +1,17 @@
+# Ambiente virtual
+.venv/
+
+# Vector store gerado em runtime
+chroma_db/
+
+# Dados de teste
+data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# VSCode
+.vscode/
