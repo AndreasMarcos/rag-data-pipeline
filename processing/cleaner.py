@@ -1,5 +1,3 @@
-# processing/cleaner.py
-
 import re
 from models import Document
 
