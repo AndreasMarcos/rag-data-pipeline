@@ -1,9 +1,12 @@
+import logging
 import requests
 from bs4 import BeautifulSoup
 from pathlib import Path
 from models import Document
 
 from config import REQUEST_TIMEOUT, REQUEST_HEADERS
+
+logger = logging.getLogger(__name__)
 
 
 def load_web(url: str) -> Document:
@@ -69,7 +72,7 @@ def load_web_batch(urls: list[str]) -> list[Document]:
         try:
             documents.append(load_web(url))
         except (ValueError, ConnectionError) as e:
-            print(f"[web_loader] Pulando {url} — {e}")
+            logger.warning("Pulando %s — %s", url, e)
     return documents
 
 

@@ -29,6 +29,12 @@ rag_pipeline/
 ├── store/            # Integração com ChromaDB
 │   └── chroma_store.py
 ├── examples/         # Exemplos de uso
+│   └── run_pipeline.py
+├── tests/            # Testes automatizados (pytest)
+│   ├── conftest.py
+│   ├── test_cleaner.py
+│   ├── test_chunker.py
+│   ├── test_loaders.py
 │   └── test_pipeline.py
 ├── pipeline.py       # Camada de orquestração
 ├── models.py         # Estruturas de dados compartilhadas
@@ -56,7 +62,7 @@ rag_pipeline/
 
 **1. Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/rag-data-pipeline.git
+git clone https://github.com/AndreasMarcos/rag-data-pipeline.git
 cd rag-data-pipeline
 ```
 
@@ -78,7 +84,7 @@ pip install -r requirements.txt
 
 **4. Execute o exemplo**
 ```bash
-python examples/test_pipeline.py
+python examples/run_pipeline.py
 ```
 
 ## Uso
@@ -96,6 +102,18 @@ results = search("como funciona o mecanismo de atenção?", n_results=5)
 
 for doc in results:
     print(doc.metadata["score"], doc.page_content[:200])
+```
+
+## Testes
+
+Os testes usam `pytest` e rodam totalmente offline: requisições HTTP, o modelo
+de embedding e o ChromaDB são substituídos por mocks, e os arquivos de teste
+(CSV e PDF) são gerados em diretórios temporários. Nenhum modelo é baixado e
+nenhum banco vetorial é criado em disco.
+
+```bash
+pip install -r requirements-dev.txt
+pytest
 ```
 
 ## Decisões de Design
@@ -125,3 +143,7 @@ Documentos escaneados precisam de uma etapa de OCR antes da ingestão.
 
 **Alinhamento de idioma** — o modelo de embedding padrão performa melhor quando
 queries e documentos estão no mesmo idioma.
+
+## Licença
+
+Distribuído sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.

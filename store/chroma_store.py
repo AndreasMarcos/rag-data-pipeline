@@ -1,8 +1,11 @@
+import logging
 import uuid
 import chromadb
 from chromadb.config import Settings
 from models import Document
 from config import CHROMA_PERSIST_DIR, CHROMA_COLLECTION_NAME
+
+logger = logging.getLogger(__name__)
 
 
 _client: chromadb.Client | None = None
@@ -12,7 +15,7 @@ def _get_client() -> chromadb.Client:
     """Retorna o cliente ChromaDB, inicializando uma única vez (singleton)."""
     global _client
     if _client is None:
-        print(f"[chroma_store] Conectando ao ChromaDB em: {CHROMA_PERSIST_DIR}")
+        logger.info("Conectando ao ChromaDB em: %s", CHROMA_PERSIST_DIR)
         _client = chromadb.PersistentClient(
             path=CHROMA_PERSIST_DIR,
         )
@@ -60,7 +63,7 @@ def add_documents(
         metadatas=metadatas,
     )
 
-    print(f"[chroma_store] {len(ids)} chunks indexados com sucesso.")
+    logger.info("%d chunks indexados com sucesso.", len(ids))
 
 
 def query(
@@ -107,9 +110,9 @@ def delete_collection() -> None:
     client = _get_client()
     try:
         client.delete_collection(CHROMA_COLLECTION_NAME)
-        print(f"[chroma_store] Collection '{CHROMA_COLLECTION_NAME}' removida.")
+        logger.info("Collection '%s' removida.", CHROMA_COLLECTION_NAME)
     except Exception:
-        print(f"[chroma_store] Collection '{CHROMA_COLLECTION_NAME}' ainda não existe, pulando.")
+        logger.warning("Collection '%s' ainda não existe, pulando.", CHROMA_COLLECTION_NAME)
 
 
 def collection_info() -> dict:

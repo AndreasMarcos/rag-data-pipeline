@@ -3,13 +3,20 @@
 #
 # Execução:
 #   cd rag_pipeline
-#   python examples/test_pipeline.py
+#   python examples/run_pipeline.py
+
+import logging
 
 from pipeline import ingest_pdf, ingest_csv, ingest_web, search, status
 from store import delete_collection
 
 
 def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    )
+
     # limpa o índice antes de começar
     print("=== Resetando índice ===")
     delete_collection()

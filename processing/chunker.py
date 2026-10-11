@@ -96,7 +96,8 @@ def _recursive_split(
             separator = sep
             break
 
-    parts = text.split(separator)
+    # separador vazio: divide caractere a caractere (str.split("") lança ValueError)
+    parts = list(text) if separator == "" else text.split(separator)
     chunks = []
     current = ""
 
